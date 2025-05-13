@@ -33,7 +33,6 @@ public class Problema2_EjecutorEmpleado {
             }
             switch (opcion) {
                 case 1 -> {
-
                     while (seleccion == 's') {
                         String nombreEm = nombres[(int) Math.floor(Math.random() * nombres.length)] + " " + apellidos[(int) Math.floor(Math.random() * apellidos.length)];
                         double salarioEm = salarios[(int) Math.floor(Math.random() * salarios.length)];
@@ -41,12 +40,12 @@ public class Problema2_EjecutorEmpleado {
                         arreglonombres.add(nombreEm);
                         arreglosalario.add(salarioEm);
                         arregloage.add(edadEm);
-                        Empleado empleado = new Empleado(nombreEm, salarioEm, edadEm);
+                        Empleado empleado = new Empleado(nombreEm, salarioEm, edadEm); // aumento inicia en 0
                         System.out.println("Empleado ingresado: " + empleado.mostrarInformacion());
                         System.out.print("Desea agregar otro empleado? (s/n): ");
                         seleccion = sc.next().charAt(0);
                     }
-
+                    seleccion = 's'; // reset para próxima vez
                 }
 
                 case 2 -> {
@@ -68,29 +67,28 @@ public class Problema2_EjecutorEmpleado {
                         System.out.print("Ingrese el porcentaje de aumento: ");
                         double porcentajedeAumento = sc.nextDouble();
                         sumasalarios = 0;
+
                         for (int i = 0; i < arreglosalario.size(); i++) {
-                            sumasalarios = sumasalarios + arreglosalario.get(i);
+                            sumasalarios += arreglosalario.get(i);
                         }
                         double promediosalarios = sumasalarios / arreglosalario.size();
+                        empleadosCambioSalario = "";
+
                         for (int i = 0; i < arreglosalario.size(); i++) {
-                            if (arreglosalario.get(i) < promediosalarios) {
-                                double nuevoSalario = arreglosalario.get(i) + (arreglosalario.get(i) * (porcentajedeAumento / 100));
-                                arreglosalario.set(i, nuevoSalario);
-                                Empleado empleado = new Empleado(arreglonombres.get(i), nuevoSalario, arregloage.get(i));
+                            Empleado empleado = new Empleado(arreglonombres.get(i), arreglosalario.get(i), arregloage.get(i));
+                            if (empleado.getSalario() < promediosalarios) {
+                                empleado.aplicarAumento(porcentajedeAumento);
+                                arreglosalario.set(i, empleado.getSalario());
                                 empleadosCambioSalario += empleado.mostrarInformacion() + "\n";
                             }
                         }
-                        System.out.println("Empleados Cambio de salario: \n" +empleadosCambioSalario );
-                        
+                        System.out.println("Empleados Cambio de salario: \n" + empleadosCambioSalario);
                     }
                 }
-                
-                default -> {
-                    System.out.println("Gracias por usar nuestor Programa");
-                }
+                case 4 ->
+                    System.out.println("Gracias por usar nuestro Programa");
             }
         } while (opcion != 4);
-
     }
 
 }
@@ -98,19 +96,37 @@ public class Problema2_EjecutorEmpleado {
 class Empleado {
 
     public String nombre;
-    public double salario;
+    private double salario;
     public int edad;
+    public double aumento;
 
-    public Empleado() {}
+    public Empleado() {
+    }
 
     public Empleado(String nombre, double salario, int edad) {
         this.nombre = nombre;
         this.salario = salario;
         this.edad = edad;
+
+    }
+
+    public double getSalario() {
+        return salario;
+    }
+
+    public void aplicarAumento(double porcentaje) {
+        double aumentoCalculado = salario * (porcentaje / 100);
+        salario += aumentoCalculado;
+        aumento = aumentoCalculado;
     }
 
     public String mostrarInformacion() {
-        return "Empleado{" + "nombre=" + nombre + ", salario=" + salario + ", edad=" + edad + '}';
+        return "Empleado{"
+                + "nombre=" + nombre
+                + ", salario=" + String.format("%.2f", salario)
+                + ", edad=" + edad
+                + ", aumento=" + String.format("%.2f", aumento)
+                + '}';
     }
 
 }
