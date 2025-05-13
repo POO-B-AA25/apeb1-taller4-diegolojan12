@@ -41,7 +41,7 @@ public class Problema5_Gym {
 
         public static double calcularPromedioTiempo(ArrayList<Integer> tiempos) {
         if (tiempos.isEmpty()) {
-            return 0; // Evitar división por cero
+            return 0; 
         }
         
         int sumatoria = 0;
@@ -88,5 +88,11 @@ class Gimacio {
     public Gimacio(Cliente cliente) {
         this.cliente = cliente;
     }
+
+    @Override
+    public String toString() {
+        return "Gimacio{" + "cliente=" + cliente + '}';
+    }
+    
 
 }
