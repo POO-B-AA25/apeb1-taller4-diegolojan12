@@ -77,7 +77,7 @@ public class Problema2_EjecutorEmpleado {
                                 double nuevoSalario = arreglosalario.get(i) + (arreglosalario.get(i) * (porcentajedeAumento / 100));
                                 arreglosalario.set(i, nuevoSalario);
                                 Empleado empleado = new Empleado(arreglonombres.get(i), nuevoSalario, arregloage.get(i));
-                                empleadosCambioSalario += empleadosCambioSalario + empleado.mostrarInformacion();
+                                empleadosCambioSalario += empleado.mostrarInformacion() + "\n";
                             }
                         }
                         System.out.println("Empleados Cambio de salario: \n" +empleadosCambioSalario );
